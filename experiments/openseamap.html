@@ -12,7 +12,7 @@
 		<!-- bring in the OpenLayers javascript library
 			(here we bring it from the remote site, but you could
 			easily serve up this javascript yourself) -->
-		<script src="https://www.openlayers.org/api/OpenLayers.js"></script>
+		<script src="OpenLayers.js"></script>
 
 		<!-- bring in the OpenStreetMap OpenLayers layers.
 			Using this hosted file will make sure we are kept up
@@ -129,26 +129,26 @@
 				// Mapnik
 				layer_mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
 				// Seamark
-				layer_seamark = new OpenLayers.Layer.TMS("Seezeichen", "http://tiles.openseamap.org/seamark/", { numZoomLevels: 18, type: 'png', getURL: getTileURL, isBaseLayer: false, displayOutsideMaxExtent: true});
+				layer_seamark = new OpenLayers.Layer.TMS("Seezeichen", "https://tiles.openseamap.org/seamark/", { numZoomLevels: 18, type: 'png', getURL: getTileURL, isBaseLayer: false, displayOutsideMaxExtent: true});
 				// Harbours
 				layer_pois = new OpenLayers.Layer.Vector("Häfen", { projection: new OpenLayers.Projection("EPSG:4326"), visibility: true, displayOutsideMaxExtent:true});
 				layer_pois.setOpacity(0.8);
 				
                 
                 //GebcoDepth
-                layer_gebco_deepshade = new OpenLayers.Layer.WMS("deepshade", "http://osm.franken.de:8080/geoserver/gebco/wms",
+                layer_gebco_deepshade = new OpenLayers.Layer.WMS("deepshade", "https://osm.franken.de:8080/geoserver/gebco/wms",
                     {layers: "gebco:deepshade_2014", projection: new OpenLayers.Projection("EPSG:900913"), format:"image/png", transparent:"true"},
                     { layerId: 5, isBaseLayer: false, visibility: true, opacity: 0.8, minResolution: 76.44});
                     
                     
-                layer_gebco_deeps_gwc = new OpenLayers.Layer.WMS("deeps_gwc", "http://osm.franken.de:8080/geoserver/gwc/service/wms",
+                layer_gebco_deeps_gwc = new OpenLayers.Layer.WMS("deeps_gwc", "https://osm.franken.de:8080/geoserver/gwc/service/wms",
                     {layers: "gebco_2014", format:"image/png"},
                     { layerId: 6, isBaseLayer: false, visibility: true, opacity: 0.8});
                 
                 // layer_gebco_deepshade ==> relief, also interesting
                 
                 
-                  layer_waterdepth_contours = new OpenLayers.Layer.WMS("Contours", "http:///osm.franken.de/cgi-bin/mapserv.fcgi?",
+                  layer_waterdepth_contours = new OpenLayers.Layer.WMS("Contours", "https:///osm.franken.de/cgi-bin/mapserv.fcgi?",
                     {
                       layers: ['contour','contour2'],
                       numZoomLevels: 22,
