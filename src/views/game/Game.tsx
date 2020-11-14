@@ -5,11 +5,21 @@ import Scene from "../../components/game/Scene";
 import { Config } from "../../types/Phaser";
 
 function Game(): ReactElement {
-  const config: Config = {
+  var config = {
     type: Phaser.AUTO,
     width: 800,
     height: 965,
     scene: Scene,
+    physics: {
+      default: 'matter',
+      matter: {
+          debug: true,
+          gravity: {
+              x: 0,
+              y: 0
+          }
+      }
+  },
   };
 
   const game: Phaser.Game = new Phaser.Game(config);
