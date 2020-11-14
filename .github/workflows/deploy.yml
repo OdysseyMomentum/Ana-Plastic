@@ -29,8 +29,6 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Yarn installation
         run: yarn install && yarn build
-      - name: Create cname
-        run: touch CNAME && echo "balancethe.world" > CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
