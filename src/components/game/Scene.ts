@@ -26,7 +26,6 @@ class Scene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("diamond", diamond);
     this.load.image("map", map);
   }
 
