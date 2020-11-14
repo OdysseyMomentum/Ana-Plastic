@@ -10,6 +10,16 @@ function Game(): ReactElement {
     width: 800,
     height: 965,
     scene: Scene,
+    physics: {
+      default: 'matter',
+      matter: {
+          debug: true,
+          gravity: {
+              x: 0,
+              y: 0
+          }
+      }
+  },
   };
 
   const game: Phaser.Game = new Phaser.Game(config);
