@@ -1,3 +1,8 @@
+[![BCH compliance](https://bettercodehub.com/edge/badge/OdysseyMomentum/Ana-Plastic?branch=main)](https://bettercodehub.com/)
+
+for more info [here](https://odysseymomentum.github.io/)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
