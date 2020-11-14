@@ -1,5 +1,4 @@
 import "phaser";
-import diamond from "../../assets/images/diamond.png";
 import map from "../../assets/images/largemap.png";
 
 class Scene extends Phaser.Scene {
@@ -7,27 +6,49 @@ class Scene extends Phaser.Scene {
     super("scene");
   }
 
-  loadDiamonds(amountOfDiamonds: number) {
-    for (let i = 0; i < amountOfDiamonds; i = i + 1) {
-      const x: number = Phaser.Math.Between(0, 2048);
-      const y: number = Phaser.Math.Between(0, 2048);
+  preload() {
+    this.load.image("map", map);
 
-      const box = this.add.image(x, y, diamond);
+    const pixelWidth = 2;
+    const star: Array<string> = [
+      ".....828.....",
+      "....72227....",
+      "....82228....",
+      "...7222227...",
+      "2222222222222",
+      "8222222222228",
+      ".72222222227.",
+      "..787777787..",
+      "..877777778..",
+      ".78778887787.",
+      ".27887.78872.",
+      ".787.....787.",
+    ];
+
+    this.textures.generate("star", { data: star, pixelWidth });
+  }
+
+  loadDiamonds(amountOfDiamonds: number) {
+    for (let i = 0; i < amountOfDiamonds; i += 1) {
+      const x: number = Phaser.Math.Between(50, 1500);
+      const y: number = Phaser.Math.Between(50, 1500);
+
+      const box = this.add.image(x, y, "star");
 
       box.setInteractive();
       box.on("clicked", this.clickHandler, this);
     }
   }
 
-  clickHandler(box?: any) {
+  /* eslint-disable no-param-reassign */
+  clickHandler(oldBox?: any) {
+    const box = oldBox;
     box.off("clicked", this.clickHandler);
     box.input.enabled = false;
     box.setVisible(false);
-  }
 
-  preload() {
-    this.load.image("map", map);
   }
+  /* eslint-disable no-param-reassign */
 
   create() {
     this.cameras.main.setBounds(0, 0, 2048, 2048);
