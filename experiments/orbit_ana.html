@@ -1,0 +1,92 @@
+
+<script src="https://unpkg.com/ipfs@0.46.1/dist/index.min.js"></script>
+<script src="https://www.unpkg.com/orbit-db@0.24.1/dist/orbitdb.min.js"></script>
+
+
+<script> 
+var globalipfs
+async function main(){
+ 
+    Peers()
+    var IPFS=Ipfs; // for the browser version    
+    globalipfs = await IPFS.create({ preload: { enabled: false} }) // otherwise keeps on loading lots of data from node*.preload.ipfs.io // see https://discuss.ipfs.io/t/how-do-i-host-my-own-preload-nodes/8583    
+    
+    await Connect();    //connect asap to node with the data
+    
+    const orbitdb = await OrbitDB.createInstance(globalipfs,{ directory: './anaplastic' })   
+    var accessController = { write: ["*"] }  
+
+    globaldb = await orbitdb.docs('anaplastic',{
+        accessController:accessController,   
+        meta: { name: 'anaplastic' }// results in a different orbit database address
+    })    
+    const address = globaldb.address;    
+    await globaldb.load();
+    ShowRecords()
+    var dbeventsonreplicated=false;
+    
+    globaldb.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+        console.log(`loaded: ${(parseFloat(progress) /  parseFloat(have) * 100).toFixed(0)}%`)
+        if (progress >= have) { // then we have the initial batch
+             if (!dbeventsonreplicated) {
+                dbeventsonreplicated=true;
+                //globaldb.events.on('replicated', UpdateRecordList)
+               }
+        }
+    } )
+    globaldb.events.on('replicated', ShowRecords)            
+    globaldb.events.on('write', (address, entry, heads) => {
+        console.log('write', address, entry, heads);
+        ShowRecords()
+    } )
+    
+    
+    globaldb.events.on('load', (dbname) => {
+        console.log('load')
+        console.log(`loaded: 100%`)
+    })
+    
+    globaldb.events.on('load.progress', (address, hash, entry, progress, total) => {
+        console.log(`loaded: ${(parseFloat(progress) /  parseFloat(total) * 100).toFixed(0)}%`)
+    })
+    
+    var tosend = { x:1,y:2}
+    tosend._id=`uniq ${new Date().getTime()}`
+    var h1=await globaldb.put(tosend)   
+}    
+const globalserverid='QmaXQNNLvMo6vNYuwxD86AxNx757FoUJ3qaDoQ58PY2bxz' 
+
+
+  async function ShowRecords() {
+     const result = await globaldb.query(() => true); // get all records
+     console.log(result)
+     console.log(JSON.stringify(result));
+    console.log(`#records: ${result.length}`);  
+    } 
+    
+
+async function Connect() {
+    const con='/dns4/gpersoon.com/tcp/4004/wss/p2p/'+globalserverid;
+    console.log(`Connect ${con}`)
+    await globalipfs.swarm.connect(con).catch(console.log); // put the address of the create_db.js here
+    await Peers();
+}
+
+async function Peers() {
+    var fconnectedtoserver=false;
+    if (globalipfs) {
+        var peers=await globalipfs.swarm.peers()
+       for (var i=0;i<peers.length;i++) {        
+            var adr=peers[i].addr.toString();
+       //     console.log(adr);
+            if (adr.includes(globalserverid)) {
+                fconnectedtoserver=true;
+                break;
+            }
+       } 
+    }
+   console.log(`Connected to server: ${fconnectedtoserver}`);
+}
+main()
+
+</script>
