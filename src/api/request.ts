@@ -1,10 +1,8 @@
 import axios, { Method, AxiosResponse } from "axios";
 
-const api = axios.create({
-  baseURL: process.env.REACT_APP_HOST_BACKEND,
-});
+const api = axios.create();
 
-const request = <T>(
+const Request = <T>(
   method: Method,
   url: string,
   params: any
@@ -16,4 +14,4 @@ const request = <T>(
   });
 };
 
-export default request;
+export default Request;
