@@ -2,13 +2,17 @@ import "phaser";
 import map from "../../assets/images/largemap.png";
 
 class Scene extends Phaser.Scene {
-  constructor() {
+  private balance: number;
+
+  private info: any;
+
+  constructor(balance = 100) {
     super("scene");
+    this.balance = balance;
   }
 
   preload() {
     this.load.image("map", map);
-
     const pixelWidth = 2;
     const star: Array<string> = [
       ".....828.....",
@@ -38,15 +42,29 @@ class Scene extends Phaser.Scene {
       box.setInteractive();
       box.on("clicked", this.clickHandler, this);
     }
+
+    this.input.on(
+      "gameobjectup",
+      function (pointer, gameObject) {
+        gameObject.emit("clicked", gameObject);
+      },
+      this
+    );
+
+    this.info = this.add.text(10, 10, "", { font: "68px Arial", fill: "red" });
+  }
+
+  update() {
+    this.info.setText(`Balance: ${this.balance}`);
   }
 
   /* eslint-disable no-param-reassign */
   clickHandler(oldBox?: any) {
     const box = oldBox;
+    this.balance -= 10;
     box.off("clicked", this.clickHandler);
     box.input.enabled = false;
     box.setVisible(false);
-
   }
   /* eslint-disable no-param-reassign */
 
