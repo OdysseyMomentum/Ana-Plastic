@@ -2,6 +2,6 @@ export interface Config {
   type: number;
   width: number;
   height: number;
-  backgroundColor: string;
+  backgroundColor?: string;
   scene: any;
 }

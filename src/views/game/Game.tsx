@@ -5,7 +5,7 @@ import Scene from "../../components/game/Scene";
 import { Config } from "../../types/Phaser";
 
 function Game(): ReactElement {
-  var config = {
+  const config: Config = {
     type: Phaser.AUTO,
     width: 800,
     height: 965,
