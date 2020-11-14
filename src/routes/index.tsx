@@ -10,7 +10,7 @@ const Game = lazy(() => import("../views/game/Game"));
 const IndexRouter: React.FC = (): ReactElement => {
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter basename={process.env.PUBLIC_URL} history={history}>
+      <HashRouter basename="https://balancethe.world/" history={history}>
         <Suspense fallback={<p>Loading...</p>}>
           <Switch>
             <Route path="/" exact component={Home} />
