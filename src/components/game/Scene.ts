@@ -1,13 +1,20 @@
 import "phaser";
 import map from "../../assets/images/largemap.png";
 import shark from "../../assets/images/shark.png";
+import turtle from "../../assets/images/green-sea-turtle.png";
+import tuna from "../../assets/images/bluefintuna.png";
+import humpback from "../../assets/images/humpback.png";
+import fishing_boat from "../../assets/images/fishing-boat.png";
+import cruise_ship from "../../assets/images/cruise-ship.png";
+import plastic from "../../assets/images/plastic.png";
+import sargassum from "../../assets/images/Sargassum.png";
 
-
-var curve;
-var moving_shark;
+// var curve;
 var t = -1;
-var duration = 5000;
+var duration = 20000;
 var tempLine = new Phaser.Geom.Line();
+var swimming_curves = []
+var swimming_entities = []
 
 class Scene extends Phaser.Scene {
   
@@ -18,19 +25,25 @@ class Scene extends Phaser.Scene {
   preload() {
     this.load.image('shark', shark);
     this.load.image('map', map);
+    this.load.image('turtle', turtle);
+    this.load.image('tuna', tuna);
+    this.load.image('humpback', humpback);
+    this.load.image('fishing_boat', fishing_boat);
+    this.load.image('cruise_ship', cruise_ship);
+    this.load.image('plastic', plastic);
+    this.load.image('sargassum', sargassum);
+
   }
 
   create() {
     this.cameras.main.setBounds(0, 0, 2048, 2048);
     this.add.image(0, 0, 'map').setOrigin(0);
-
-    this.swimming_shark();
-    
+    this.initialize_swimming_entities();
   }
 
   update (time, delta)
-  {
-    
+  { 
+    console.log(t)
       if (t === -1)
       {
           return;
@@ -38,21 +51,91 @@ class Scene extends Phaser.Scene {
       t += delta;
       if (t >= duration)
       {
-          //  Reached the end
-          moving_shark.setVelocity(0, 0);
+        // repeat animation
+          t = 0;
       }
       else
       {
-        console.log(delta)
           var d = (t / duration);
-          var p = curve.getPoint(d);
-          moving_shark.setPosition(p.x, p.y);
+          for(let i = 0; i<swimming_curves.length; i++){
+            let curve = swimming_curves[i];
+            let entity = swimming_entities[i];
+            var p = curve.getPoint(d);
+            entity.setPosition(p.x, p.y);
+          }
       }
   }
 
-  swimming_shark(){
+  initialize_swimming_entities(){
+    this.populate_swimming_curves();
+  
+    let entity = this.add.image(0, 0, 'shark');
+    entity.setScale(1/2);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'turtle');
+    entity.setScale(1/8);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'tuna');
+    entity.setScale(1/8);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'humpback');
+    entity.setScale(1/3);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'fishing_boat');
+    entity.setScale(1/2);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'cruise_ship');
+    entity.setScale(1/8);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'plastic');
+    entity.setScale(1/6);
+    swimming_entities.push(entity)
+    entity = this.add.image(0, 0, 'sargassum');
+    entity.setScale(1/5);
+    swimming_entities.push(entity)
+    t = 0;
+  }
+
+  populate_swimming_curves(){
     let graphics = this.add.graphics();
-    let line = new Phaser.Geom.Line(500, 950, 1900, 300);
+    graphics.lineStyle(0, 0xffffff, 1);
+
+    let curve = new Phaser.Curves.Spline(this.get_points(100, 1000, 1900, 300, 100, -100, 3));
+    curve.draw(graphics, 64);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(2000, 900, 350, 450, 30, -90, 3));
+    curve.draw(graphics, 64);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(1200, -300, 300, 1900, 30, -90, 3));
+    curve.draw(graphics, 64);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(2600, 500, 300, 1200, 30, -90, 3));
+    curve.draw(graphics, 100);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(900, 550, 905, 555, 30, -90, 3));
+    curve.draw(graphics, 100);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(1800, 0, 1100, 1200, 150, -55, 5));
+    curve.draw(graphics, 3);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(2000, 0, 1500, 0, 11, -55, 2));
+    curve.draw(graphics, 3);
+    swimming_curves.push(curve)
+
+    curve = new Phaser.Curves.Spline(this.get_points(700, 700, 705, 705, 30, -90, 3));
+    curve.draw(graphics, 2);
+    swimming_curves.push(curve)
+
+  }
+
+  get_points(x1, y1, x2, y2, curve1, curve2, modulus){
+    let line = new Phaser.Geom.Line(x1, y1, x2, y2);
     let points = [];
     points.push(line.getPointA());
     const length = Phaser.Geom.Line.Length(line);
@@ -68,11 +151,11 @@ class Scene extends Phaser.Scene {
         let ray = new Phaser.Geom.Line(prevX, prevY, currentPoint.x, currentPoint.y);
         let normal = Phaser.Geom.Line.GetNormal(ray);
         let midPoint = Phaser.Geom.Line.GetMidPoint(ray);
-        if(i%3 === 0){
+        if(i%modulus === 0){
             points.push(new Phaser.Math.Vector2(midPoint.x + normal.x * vx, midPoint.y + normal.y * vy));
         }
         else {
-            points.push(new Phaser.Math.Vector2(midPoint.x + 100 + normal.x * vx, midPoint.y - 100 + normal.y * vy));
+            points.push(new Phaser.Math.Vector2(midPoint.x + curve1 + normal.x * vx, midPoint.y - curve2 + normal.y * vy));
         }
         prevX = currentPoint.x;
         prevY = currentPoint.y;
@@ -82,22 +165,10 @@ class Scene extends Phaser.Scene {
     }
 
     points.push(line.getPointB());
-    curve = new Phaser.Curves.Spline(points);
-    graphics.lineStyle(3, 0xffffff, 1);
-    curve.draw(graphics, 64);
-    moving_shark = this.matter.add.image(line.x1, line.y1, 'shark');
-    moving_shark.setScale(1/3);
-
-    this.input.once('pointerdown', function () {
-        t = 0;
-    }, this);
-
-    // var d = (t / duration);
-    // var p = curve.getPoint(d);
-    // moving_shark.setPosition(p.x, p.y);
-
+    return points;
   }
 
+  
 }
 
 export default Scene;
