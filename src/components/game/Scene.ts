@@ -25,6 +25,29 @@ class Scene extends Phaser.Scene {
 
   private balance_text: any;
   private dollar_balance_text: any;
+
+  private happiness_text: any;
+  private sea_life_text: any;
+  private plastic_text: any;
+  private sea_level_text: any;
+  private ph_text: any;
+  private o2_text: any;
+  private co2_text: any;
+  private nutrition_text: any;
+  private noise_text: any;
+  private temp_text: any;
+  private parameters= {
+    "happiness": 50,
+    "sea_life": 10,
+    "plastic": 50,
+    "sea_level": 21, // change cm since 1900
+    "ph": 8.1,
+    "o2": 210000, // parts per million
+    "co2": 409.8, //parts per million in 2019
+    "nutrition": 10,
+    "noise": 10,
+    "temp": 0.95, // deg C, 2019
+  };
   private vx;
   private vy;
   private prevX;
@@ -85,7 +108,6 @@ class Scene extends Phaser.Scene {
     for (let i = 0; i < amountOfDiamonds; i += 1) {
       const x: number = Phaser.Math.Between(50, 1500);
       const y: number = Phaser.Math.Between(50, 1500);
-
       const box = this.add.image(x, y, "star");
 
       box.setInteractive();
@@ -99,9 +121,24 @@ class Scene extends Phaser.Scene {
       },
       this
     );
+    this.init_text_labels();
 
+  }
+
+  init_text_labels(){
     this.balance_text = this.add.text(20, 20, "", { font: "26px Arial", fill: "#00CED1" , backgroundColor: "white"});
     this.dollar_balance_text = this.add.text(20, 50, "$ " + this.dollar_balance, { font: "26px Arial", fill: "#1E90FF" , backgroundColor: "white"});
+    let param_style = {font: "14px Arial", fill: "#66CDAA" , backgroundColor: "white"}
+    this.happiness_text = this.add.text(20, 100, "Happiness: " + this.parameters.happiness, param_style);
+    this.sea_life_text = this.add.text(20, 116, "Sea life: " + this.parameters.sea_life, param_style);
+    this.plastic_text = this.add.text(20, 132, "Plastic: " + this.parameters.plastic, param_style);
+    this.sea_level_text = this.add.text(20, 148, "Sea level: " + this.parameters.sea_level, param_style);
+    this.ph_text = this.add.text(20, 160, "PH level: " + this.parameters.ph, param_style);
+    this.o2_text = this.add.text(20, 176, "O2: " + this.parameters.o2, param_style);
+    this.co2_text = this.add.text(20, 192, "CO2: " + this.parameters.co2, param_style);
+    this.nutrition_text = this.add.text(20, 208, "Nutrition: " + this.parameters.nutrition, param_style);
+    this.noise_text = this.add.text(20, 224, "Noise: " + this.parameters.noise, param_style);
+    this.temp_text = this.add.text(20, 240, "Temp: " + this.parameters.temp, param_style);
   }
 
   /* eslint-disable no-param-reassign */
