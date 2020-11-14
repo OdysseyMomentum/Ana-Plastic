@@ -1,7 +1,8 @@
 {
-  "name": "boilerplate",
+  "name": "balancetheworld",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://balancethe.world/",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -13,6 +14,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "axios": "^0.19.2",
+    "gh-pages": "^3.1.0",
     "history": "^5.0.0",
     "phaser": "^3.24.1",
     "react": "^16.13.1",
