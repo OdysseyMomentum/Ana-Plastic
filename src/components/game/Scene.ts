@@ -1,4 +1,5 @@
 import "phaser";
+import map from "../../assets/images/map.png";
 
 class Scene extends Phaser.Scene {
   constructor() {
@@ -6,27 +7,13 @@ class Scene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("logo", "assets/phaser3-logo.png");
-    this.load.image("libs", "assets/libs.png");
+
+    this.load.image('map', map);
   }
 
   create() {
-    this.add.shader("RGB Shift Field", 0, 0, 800, 600).setOrigin(0);
-
-    this.add.shader("Plasma", 0, 412, 800, 172).setOrigin(0);
-
-    this.add.image(400, 300, "libs");
-
-    const logo = this.add.image(400, 70, "logo");
-
-    this.tweens.add({
-      targets: logo,
-      y: 350,
-      duration: 1500,
-      ease: "Sine.inOut",
-      yoyo: true,
-      repeat: -1,
-    });
+    this.cameras.main.setBounds(0, 0, 2048, 2048);
+    this.add.image(0, 0, 'map').setOrigin(0);
   }
 }
 
