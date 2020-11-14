@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [master, hosting]
+    branches: [main, hosting]
 
 jobs:
   build:

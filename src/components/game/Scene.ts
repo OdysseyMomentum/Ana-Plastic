@@ -16,6 +16,7 @@ var tempLine = new Phaser.Geom.Line();
 var swimming_curves = []
 var swimming_entities = []
 
+
 class Scene extends Phaser.Scene {
   
   constructor() {
