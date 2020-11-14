@@ -46,6 +46,7 @@ class Scene extends Phaser.Scene {
     box.off("clicked", this.clickHandler);
     box.input.enabled = false;
     box.setVisible(false);
+
   }
   /* eslint-disable no-param-reassign */
 
