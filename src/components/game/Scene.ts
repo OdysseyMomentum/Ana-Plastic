@@ -8,6 +8,7 @@ import fishing_boat from "../../assets/images/fishing-boat.png";
 import cruise_ship from "../../assets/images/cruise-ship.png";
 import plastic from "../../assets/images/plastic.png";
 import sargassum from "../../assets/images/Sargassum.png";
+import intro from "../../assets/video/intro.mp4";
 
 // var curve;
 let t = -1;
@@ -15,15 +16,39 @@ const duration = 20000;
 // var tempLine = new Phaser.Geom.Line();
 const swimming_curves = [];
 const swimming_entities = [];
+let video;
+let intro_is_over = false;
 
 class Scene extends Phaser.Scene {
   private balance: number;
+  private dollar_balance: number;
 
-  private info: any;
+  private balance_text: any;
+  private dollar_balance_text: any;
+  private vx;
+  private vy;
+  private prevX;
+  private prevY;
+  private length;
+  private waves;
+  private line;
+  private points;
+  private points_sets: number[][];
 
-  constructor(balance = 100) {
+  constructor() {
     super("scene");
-    this.balance = balance;
+    this.balance = Phaser.Math.Between(50, 150);
+    this.dollar_balance = Phaser.Math.Between(1, 10);
+    this.points_sets = [
+      [100, 1000, 1900, 300, 100, -100, 3],
+      [2000, 900, 350, 450, 30, -90, 3],
+      [1200, -300, 300, 1900, 30, -90, 3],
+      [2600, 500, 300, 1200, 30, -90, 3],
+      [900, 550, 905, 555, 30, -90, 3],
+      [1800, 0, 1100, 1200, 150, -55, 5],
+      [2000, 0, 1500, 0, 11, -55, 2],
+      [700, 700, 705, 705, 30, -90, 3]
+    ];
   }
 
   preload() {
@@ -36,6 +61,7 @@ class Scene extends Phaser.Scene {
     this.load.image("cruise_ship", cruise_ship);
     this.load.image("plastic", plastic);
     this.load.image("sargassum", sargassum);
+    this.load.video('intro', intro);
     const pixelWidth = 2;
     const star: Array<string> = [
       ".....828.....",
@@ -74,51 +100,70 @@ class Scene extends Phaser.Scene {
       this
     );
 
-    this.info = this.add.text(10, 10, "", { font: "68px Arial", fill: "red" });
+    this.balance_text = this.add.text(20, 20, "", { font: "26px Arial", fill: "#00CED1" , backgroundColor: "white"});
+    this.dollar_balance_text = this.add.text(20, 50, "$ " + this.dollar_balance, { font: "26px Arial", fill: "#1E90FF" , backgroundColor: "white"});
   }
 
   /* eslint-disable no-param-reassign */
   clickHandler(oldBox?: any) {
-    const box = oldBox;
-    this.balance -= 10;
-    box.off("clicked", this.clickHandler);
-    box.input.enabled = false;
-    box.setVisible(false);
+    if((this.balance - 10)>0){
+      const box = oldBox;
+      this.balance -= 10;
+      box.off("clicked", this.clickHandler);
+      box.input.enabled = false;
+      box.setVisible(false);
+    }
   }
   /* eslint-disable no-param-reassign */
 
   create() {
     this.cameras.main.setBounds(0, 0, 2048, 2048);
-
     this.add.image(0, 0, "map").setOrigin(0);
     this.initialize_swimming_entities();
     this.loadDiamonds(20);
+
+    video = this.add.video(960, 500, 'intro');
+    video.play(true);
+    this.time.delayedCall(
+        4000,                // ms
+        this.stopVideo,
+        []);
+  }
+
+  stopVideo(){
+    intro_is_over = true;
+    video.stop()
+    video.destroy();
+    
   }
 
   update(time, delta) {
-    this.info.setText(`Balance: ${this.balance}`);
-    console.log(t);
-    if (t === -1) {
-      return;
-    }
-    t += delta;
-    if (t >= duration) {
-      // repeat animation
-      t = 0;
-    } else {
-      const d = t / duration;
-      for (let i = 0; i < swimming_curves.length; i += 1) {
-        const curve = swimming_curves[i];
-        const entity = swimming_entities[i];
-        const p = curve.getPoint(d);
-        entity.setPosition(p.x, p.y);
+    console.log(intro_is_over);
+    if(intro_is_over){
+      
+      this.balance_text.setText(`Balance: ${this.balance}`);
+      
+      if (t === -1) {
+        return;
+      }
+      t += delta;
+      if (t >= duration) {
+        // repeat animation
+        t = 0;
+      } else {
+        const d = t / duration;
+        for (let i = 0; i < swimming_curves.length; i += 1) {
+          const curve = swimming_curves[i];
+          const entity = swimming_entities[i];
+          const p = curve.getPoint(d);
+          entity.setPosition(p.x, p.y);
+        }
       }
     }
   }
 
   initialize_swimming_entities() {
     this.populate_swimming_curves();
-
     let entity = this.add.image(0, 0, "shark");
     entity.setScale(1 / 2);
     swimming_entities.push(entity);
@@ -149,102 +194,68 @@ class Scene extends Phaser.Scene {
   populate_swimming_curves() {
     const graphics = this.add.graphics();
     graphics.lineStyle(0, 0xffffff, 1);
-
-    let curve = new Phaser.Curves.Spline(
-      this.get_points(100, 1000, 1900, 300, 100, -100, 3)
-    );
-    curve.draw(graphics, 64);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(2000, 900, 350, 450, 30, -90, 3)
-    );
-    curve.draw(graphics, 64);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(1200, -300, 300, 1900, 30, -90, 3)
-    );
-    curve.draw(graphics, 64);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(2600, 500, 300, 1200, 30, -90, 3)
-    );
-    curve.draw(graphics, 100);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(900, 550, 905, 555, 30, -90, 3)
-    );
-    curve.draw(graphics, 100);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(1800, 0, 1100, 1200, 150, -55, 5)
-    );
-    curve.draw(graphics, 3);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(2000, 0, 1500, 0, 11, -55, 2)
-    );
-    curve.draw(graphics, 3);
-    swimming_curves.push(curve);
-
-    curve = new Phaser.Curves.Spline(
-      this.get_points(700, 700, 705, 705, 30, -90, 3)
-    );
-    curve.draw(graphics, 2);
-    swimming_curves.push(curve);
+    for(let i = 0; i<this.points_sets.length; i++){
+      let curve = new Phaser.Curves.Spline(
+        this.get_points(this.points_sets[i][0], this.points_sets[i][1], this.points_sets[i][2], this.points_sets[i][3], this.points_sets[i][4], this.points_sets[i][5], this.points_sets[i][6])
+        );
+        curve.draw(graphics, 64);
+        swimming_curves.push(curve);
+    }
   }
 
-  get_points = (x1, y1, x2, y2, curve1, curve2, modulus) => {
-    const line = new Phaser.Geom.Line(x1, y1, x2, y2);
-    const points = [];
-    points.push(line.getPointA());
-    const length = Phaser.Geom.Line.Length(line);
-    const waves = Math.ceil(length / 200);
-    let vx = 100;
-    let vy = 100;
-    let prevX = line.x1;
-    let prevY = line.y1;
+  get_points(x1, y1, x2, y2, curve1, curve2, modulus){
+    this.line = new Phaser.Geom.Line(x1, y1, x2, y2);
+    this.points = [];
+    this.points.push(this.line.getPointA());
+    this.length = Phaser.Geom.Line.Length(this.line);
+    this.waves = Math.ceil(this.length / 200);
+    this.vx = 100;
+    this.vy = 100;
+    this.prevX = this.line.x1;
+    this.prevY = this.line.y1;
+    this.generate_points_set(curve1, curve2, modulus)
+    this.points.push(this.line.getPointB());
+    return this.points;
+  }
 
-    for (let i = 1; i <= waves; i += 1) {
-      const currentPoint = line.getPoint(i / waves);
+  generate_points_set(curve1, curve2, modulus){
+    for (let i = 1; i <= this.waves; i += 1) {
+      const currentPoint = this.line.getPoint(i / this.waves);
       const ray = new Phaser.Geom.Line(
-        prevX,
-        prevY,
+        this.prevX,
+        this.prevY,
         currentPoint.x,
         currentPoint.y
       );
       const normal = Phaser.Geom.Line.GetNormal(ray);
       const midPoint = Phaser.Geom.Line.GetMidPoint(ray);
-      if (i % modulus === 0) {
-        points.push(
-          new Phaser.Math.Vector2(
-            midPoint.x + normal.x * vx,
-            midPoint.y + normal.y * vy
-          )
-        );
-      } else {
-        points.push(
-          new Phaser.Math.Vector2(
-            midPoint.x + curve1 + normal.x * vx,
-            midPoint.y - curve2 + normal.y * vy
-          )
-        );
-      }
-      prevX = currentPoint.x;
-      prevY = currentPoint.y;
-
-      vx *= -1;
-      vy *= -1;
+      this.points.push(
+        this.get_vector(i, modulus, midPoint, normal, curve1, curve2)
+      );      
+      this.prevX = currentPoint.x;
+      this.prevY = currentPoint.y;
+      this.vx *= -1;
+      this.vy *= -1;
     }
+  }
 
-    points.push(line.getPointB());
-    return points;
-  };
+  get_vector(i, modulus, midPoint, normal, curve1, curve2){
+    if (i % modulus === 0) {
+      return  new Phaser.Math.Vector2(
+          midPoint.x + normal.x * this.vx,
+          midPoint.y + normal.y * this.vy
+        )
+      
+    } else {
+      return  new Phaser.Math.Vector2(
+          midPoint.x + curve1 + normal.x * this.vx,
+          midPoint.y - curve2 + normal.y * this.vy
+        )
+      
+    }
+  }
 }
+
+
 
 export default Scene;

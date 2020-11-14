@@ -6,8 +6,8 @@ import Scene from "../../components/game/Scene";
 function Game(): ReactElement {
   const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 965,
+    width: 1000,
+    height: 1200,
     scene: Scene,
     physics: {
       default: "matter",
