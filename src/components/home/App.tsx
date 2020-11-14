@@ -1,8 +1,13 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import logo from "../../assets/images/logo.svg";
 import "../../assets/css/home/App.css";
+import airplaneRequest from "../../api/airplaneRequest";
 
 const App: React.FC = (): ReactElement => {
+  useEffect(() => {
+    airplaneRequest.getAirplanesOverSargosso();
+  });
+
   return (
     <div className="App">
       <header className="App-header">
