@@ -5,8 +5,6 @@ import Scene from "../../components/game/Scene";
 import { Config } from "../../types/Phaser";
 
 function Game(): ReactElement {
-  const game: Phaser.Game;
-
   const config: Config = {
     type: Phaser.AUTO,
     backgroundColor: "#125555",
@@ -15,7 +13,7 @@ function Game(): ReactElement {
     scene: Scene,
   };
 
-  game = new Phaser.Game(config);
+  const game: Phaser.Game = new Phaser.Game(config);
   game.scale.scaleMode = Phaser.Scale.RESIZE;
 
   return (
