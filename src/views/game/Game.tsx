@@ -5,11 +5,10 @@ import Scene from "../../components/game/Scene";
 import { Config } from "../../types/Phaser";
 
 function Game(): ReactElement {
-  const config: Config = {
+  var config = {
     type: Phaser.AUTO,
-    backgroundColor: "#125555",
     width: 800,
-    height: 600,
+    height: 965,
     scene: Scene,
   };
 
