@@ -1,5 +1,3 @@
-import { createHistory } from "history";
+import { createBrowserHistory } from "history";
 
-export default createHistory({
-  basename: process.env.PUBLIC_URL,
-});
+export default createBrowserHistory();
