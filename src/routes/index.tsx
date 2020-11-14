@@ -5,6 +5,7 @@ import theme from "../assets/theme";
 import history from "../utils/history";
 
 const Home = lazy(() => import("../views/home/App"));
+const Game = lazy(() => import("../views/game/Game"));
 
 const IndexRouter: React.FC = (): ReactElement => {
   return (
@@ -13,6 +14,7 @@ const IndexRouter: React.FC = (): ReactElement => {
         <Suspense fallback={<p>Loading...</p>}>
           <Switch>
             <Route path="/" exact component={Home} />
+            <Route path="/game" exact component={Game} />
           </Switch>
         </Suspense>
       </Router>
