@@ -1,5 +1,9 @@
 import "phaser";
 import map from "../../assets/images/largemap.png";
+
+import Donut from "./Donut";
+import donutImage from "../../assets/images/donut.png";
+
 import shark from "../../assets/images/shark.png";
 import turtle from "../../assets/images/green-sea-turtle.png";
 import tuna from "../../assets/images/bluefintuna.png";
@@ -22,8 +26,8 @@ let intro_is_over = false;
 let self;
 
 class Scene extends Phaser.Scene {
-  private balance: number;
-  private dollar_balance: number;
+  public balance: number;
+  public dollar_balance: number;
 
   private balance_text: any;
   private dollar_balance_text: any;
@@ -39,7 +43,7 @@ class Scene extends Phaser.Scene {
   private nutrition_text: any;
   private noise_text: any;
   private temp_text: any;
-  private parameters= {
+  public parameters= {
     "happiness": 50,
     "sea_life": 10,
     "plastic": 0,
@@ -83,6 +87,7 @@ class Scene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("donutBase", donutImage);
     this.load.image("shark", shark);
     this.load.image("map", map);
     this.load.image("turtle", turtle);
@@ -213,6 +218,8 @@ class Scene extends Phaser.Scene {
     this.graphics = this.add.graphics();
     this.initialize_swimming_entities();
     this.loadDiamonds(20);
+
+    const donut = new Donut(this, {});
 
     video = this.add.video(960, 500, 'intro');
     video.play(true);

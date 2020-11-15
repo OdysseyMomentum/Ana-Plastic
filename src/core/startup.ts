@@ -1,7 +1,11 @@
+import airplaneRequest from "../api/airplaneRequest";
 import weatherRequest from "../api/weatherRequest";
 
 class Startup {
   constructor() {
-    weatherRequest.getSargossoSeaWeather();
+    const weather = weatherRequest.getSargossoSeaWeather();
+    const airplanes = airplaneRequest.getAirplanesOverSargosso();
+
+    
   }
 }
