@@ -2,10 +2,15 @@ import APIRequest from "./request";
 import Weather from "../core/objects/weather";
 
 const API_KEY = "fefde424a973e343f49dbf4192f53167";
+interface Response {
+  temp: number;
+  pressure: number;
+  humidity: number;
+}
 
 class weatherRequest {
   static getData = (lat, lon) => {
-    return APIRequest(
+    return APIRequest<Response>(
       "GET",
       `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
       []

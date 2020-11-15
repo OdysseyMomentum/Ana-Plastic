@@ -3,14 +3,23 @@ import "phaser";
 import Box from "@material-ui/core/Box";
 import Donut from "../../components/game/Donut";
 import Scene from "../../components/game/Scene";
-import { Config } from "../../types/Phaser";
 
 function Game(): ReactElement {
-  const config: Config = {
+  const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 965,
+    width: 1000,
+    height: 1200,
     scene: Scene,
+    physics: {
+      default: "matter",
+      matter: {
+        debug: true,
+        gravity: {
+          x: 0,
+          y: 0,
+        },
+      },
+    },
   };
 
   const game: Phaser.Game = new Phaser.Game(config);

@@ -1,11 +1,16 @@
 import APIRequest from "./request";
 import Airplane from "../core/objects/airplane";
 
-const API_KEY = "fefde424a973e343f49dbf4192f53167";
+// const API_KEY = "fefde424a973e343f49dbf4192f53167";
+
+interface Response {
+  states: Array<string>;
+  temp: number;
+}
 
 class airplaneRequest {
   static get = (latMin, longMin, latMax, longMax) => {
-    return APIRequest(
+    return APIRequest<Response>(
       "GET",
       `https://opensky-network.org/api/states/all?lamin=${latMin}&lomin=${longMin}&lamax=${latMax}&lomax=${longMax}`,
       []
@@ -28,6 +33,7 @@ const getAirplanesOverSargosso = () => {
     }
 
     response["states"].forEach((airplaneResponse) => {
+
       const airplane = new Airplane(airplaneResponse[5], airplaneResponse[6]);
 
       airplanes.push(airplane);
