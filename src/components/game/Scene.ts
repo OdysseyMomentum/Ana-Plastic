@@ -154,7 +154,7 @@ class Scene extends Phaser.Scene {
 
   update_text_labels(){
     this.balance_text.setText(`Money: ${this.balance}`);
-    this.balance_text.setStyle({backgroundColor: (this.balance === 0)? "red": "white"});
+    this.balance_text.setStyle({fill: (this.balance === 0)? "red": "blue"});
 
     this.happiness_text.setText(`Happiness: ${this.parameters["happiness"]}`);
     this.happiness_text.setStyle({backgroundColor: (this.parameters["happiness"] >= this.default_parameters["happiness"])? "green" :"red"});
