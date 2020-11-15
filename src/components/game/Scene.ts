@@ -26,8 +26,8 @@ let intro_is_over = false;
 let self;
 
 class Scene extends Phaser.Scene {
-  private balance: number;
-  private dollar_balance: number;
+  public balance: number;
+  public dollar_balance: number;
 
   private balance_text: any;
   private dollar_balance_text: any;
@@ -43,7 +43,7 @@ class Scene extends Phaser.Scene {
   private nutrition_text: any;
   private noise_text: any;
   private temp_text: any;
-  private parameters= {
+  public parameters= {
     "happiness": 50,
     "sea_life": 10,
     "plastic": 50,
@@ -73,7 +73,7 @@ class Scene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("DonutBase", donutImage);
+    this.load.image("donutBase", donutImage);
     this.load.image("shark", shark);
     this.load.image("map", map);
     this.load.image("turtle", turtle);

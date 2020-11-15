@@ -9,7 +9,7 @@ class Donut extends Phaser.GameObjects.Graphics {
     super(scene, options);
 
     const donut = scene.add.container(this.height - 280, this.width - 200);
-    const donutImageBase = scene.add.sprite(0, 0, "donutbase").setOrigin(0);
+    const donutImageBase = scene.add.sprite(0, 0, "donutBase").setOrigin(0);
 
     donut.add(donutImageBase);
     this.insertPolygon(scene, donut);

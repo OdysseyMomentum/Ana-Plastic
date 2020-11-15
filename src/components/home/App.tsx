@@ -11,18 +11,17 @@ const App: React.FC = (): ReactElement => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-log  o" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to ddreload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer">
-          Learn React
+        <img src="https://cdn.discordapp.com/attachments/776780435903873026/777188544774406174/turtlesmall200.png" style={{width: "500px"}} />
+        <h1>Balance The World</h1>
+        <p className="lead">Understand the world of finance and climate</p>
+        <a className="btn btn-primary mt-5" href="/#/game">
+          Begin the journey
         </a>
       </header>
+      <footer>
+        <p>Copyright ana-plastic </p>
+        <p>Also check: DasMeer / PlastPick</p>
+      </footer>
     </div>
   );
 };
