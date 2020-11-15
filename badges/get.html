@@ -145,7 +145,7 @@ async function main() {
       	log(`Make sure you are on the Rinkeby network (currently ${nid})`);  
         return
      }
-     var nft_jsonurl="https://gpersoon.com/anatoken/src/badges/smartcontracts/build/contracts/WORLDNFT.json"
+     var nft_jsonurl="https://raw.githubusercontent.com/OdysseyMomentum/Ana-Plastic/main/badges/build/contracts/WORLDNFT.json"
      nft_jsonobject=await GetJson(nft_jsonurl)    
      nft_address=nft_jsonobject.networks[nid].address		
      var nft_code=await web3.eth.getCode(nft_address)
