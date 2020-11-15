@@ -3,25 +3,9 @@ import Phaser from "phaser";
 import Box from "@material-ui/core/Box";
 import Donut from "../../components/game/Donut";
 import Scene from "../../components/game/Scene";
+import { config } from "../../utils/phaserConfig";
 
 function Game(): ReactElement {
-  const config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 1200,
-    scene: Scene,
-    physics: {
-      default: "matter",
-      matter: {
-        debug: true,
-        gravity: {
-          x: 0,
-          y: 0,
-        },
-      },
-    },
-  };
-
   const game: Phaser.Game = new Phaser.Game(config);
   game.scale.scaleMode = Phaser.Scale.RESIZE;
 

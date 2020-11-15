@@ -1,5 +1,4 @@
 import React, { ReactElement, useEffect } from "react";
-import logo from "../../assets/images/logo.svg";
 import "../../assets/css/home/App.css";
 import airplaneRequest from "../../api/airplaneRequest";
 
