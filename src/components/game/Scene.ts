@@ -195,20 +195,20 @@ class Scene extends Phaser.Scene {
 
   /* eslint-disable no-param-reassign */
   clickHandler(oldBox?: any) {
-    if((this.balance - 10)>0){
-      const box = oldBox;
-      this.balance += 25;
-      self.parameters["plastic"] += 1;
-      self.parameters["happiness"] += 1;
-      self.parameters["co2"] += 4;
-      self.parameters["noise"] += 5;
-      self.parameters["temp"] += 0.02;
-      self.parameters["ph"] += 0.01;
-      self.parameters["sea_life"] -= 4;
-      box.off("clicked", this.clickHandler);
-      box.input.enabled = false;
-      box.setVisible(false);
-    }
+   
+    const box = oldBox;
+    this.balance += 25;
+    self.parameters["plastic"] += 1;
+    self.parameters["happiness"] += 1;
+    self.parameters["co2"] += 4;
+    self.parameters["noise"] += 5;
+    self.parameters["temp"] += 0.02;
+    self.parameters["ph"] += 0.01;
+    self.parameters["sea_life"] -= 4;
+    box.off("clicked", this.clickHandler);
+    box.input.enabled = false;
+    box.setVisible(false);
+    
   }
   /* eslint-disable no-param-reassign */
 
