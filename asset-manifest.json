@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.d9e75851.chunk.css",
-    "main.js": "/static/js/main.e56ebf27.chunk.js",
-    "runtime-main.js": "/static/js/runtime-main.f6edee00.js",
+    "main.js": "/static/js/main.23b80f00.chunk.js",
+    "runtime-main.js": "/static/js/runtime-main.d76a7663.js",
     "static/js/2.cb945fd8.chunk.js": "/static/js/2.cb945fd8.chunk.js",
-    "static/js/3.ac26f769.chunk.js": "/static/js/3.ac26f769.chunk.js",
-    "static/js/4.2d4efecb.chunk.js": "/static/js/4.2d4efecb.chunk.js",
-    "static/js/5.45b79f5a.chunk.js": "/static/js/5.45b79f5a.chunk.js",
+    "static/js/3.a3807222.chunk.js": "/static/js/3.a3807222.chunk.js",
+    "static/js/4.a35f7e2d.chunk.js": "/static/js/4.a35f7e2d.chunk.js",
+    "static/js/5.ff4cca05.chunk.js": "/static/js/5.ff4cca05.chunk.js",
     "static/css/6.958e3fcb.chunk.css": "/static/css/6.958e3fcb.chunk.css",
-    "static/js/6.a4a17cdc.chunk.js": "/static/js/6.a4a17cdc.chunk.js",
+    "static/js/6.92bfc8b3.chunk.js": "/static/js/6.92bfc8b3.chunk.js",
     "index.html": "/index.html",
-    "precache-manifest.38ee001c98c87e645484291f1e85a36b.js": "/precache-manifest.38ee001c98c87e645484291f1e85a36b.js",
+    "precache-manifest.00f877359868016ae8cac1c1df225b20.js": "/precache-manifest.00f877359868016ae8cac1c1df225b20.js",
     "service-worker.js": "/service-worker.js",
     "static/js/2.cb945fd8.chunk.js.LICENSE.txt": "/static/js/2.cb945fd8.chunk.js.LICENSE.txt",
-    "static/js/5.45b79f5a.chunk.js.LICENSE.txt": "/static/js/5.45b79f5a.chunk.js.LICENSE.txt",
+    "static/js/5.ff4cca05.chunk.js.LICENSE.txt": "/static/js/5.ff4cca05.chunk.js.LICENSE.txt",
     "static/media/Sargassum.png": "/static/media/Sargassum.011fe6ea.png",
     "static/media/bluefintuna.png": "/static/media/bluefintuna.69443f1b.png",
     "static/media/cruise-ship.png": "/static/media/cruise-ship.f1761113.png",
@@ -22,16 +22,15 @@
     "static/media/humpback.png": "/static/media/humpback.62c70730.png",
     "static/media/intro.mp4": "/static/media/intro.3b507568.mp4",
     "static/media/largemap.png": "/static/media/largemap.72d9c851.png",
-    "static/media/logo.svg": "/static/media/logo.5d5d9eef.svg",
     "static/media/microplastics.png": "/static/media/microplastics.7c86267a.png",
     "static/media/plastic.png": "/static/media/plastic.11f9b5ea.png",
     "static/media/plasticbag.png": "/static/media/plasticbag.e5eaa4f3.png",
     "static/media/shark.png": "/static/media/shark.f7bb7bd6.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.f6edee00.js",
+    "static/js/runtime-main.d76a7663.js",
     "static/js/2.cb945fd8.chunk.js",
     "static/css/main.d9e75851.chunk.css",
-    "static/js/main.e56ebf27.chunk.js"
+    "static/js/main.23b80f00.chunk.js"
   ]
 }
