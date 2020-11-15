@@ -25,9 +25,9 @@ const getSargossoSeaWeather = () => {
 
   weatherRequest.getData(lat, lon).then((response) => {
     const weather = new Weather(
-      response.data.temp,
-      response.data.pressure,
-      response.data.humidity
+      response.data["temp"],
+      response.data["pressure"],
+      response.data["humidity"]
     );
   });
 };
