@@ -7,6 +7,8 @@ import humpback from "../../assets/images/humpback.png";
 import fishing_boat from "../../assets/images/fishing-boat.png";
 import cruise_ship from "../../assets/images/cruise-ship.png";
 import plastic from "../../assets/images/plastic.png";
+import microplastic from "../../assets/images/microplastics.png";
+import plasticbag from "../../assets/images/plasticbag.png";
 import sargassum from "../../assets/images/Sargassum.png";
 import intro from "../../assets/video/intro.mp4";
 
@@ -14,10 +16,10 @@ import intro from "../../assets/video/intro.mp4";
 let t = -1;
 const duration = 20000;
 // var tempLine = new Phaser.Geom.Line();
-const swimming_curves = [];
-const swimming_entities = [];
+let swimming_entities = []
 let video;
 let intro_is_over = false;
+let self;
 
 class Scene extends Phaser.Scene {
   private balance: number;
@@ -25,6 +27,7 @@ class Scene extends Phaser.Scene {
 
   private balance_text: any;
   private dollar_balance_text: any;
+  private entity_cruise_ship: any;
 
   private happiness_text: any;
   private sea_life_text: any;
@@ -60,18 +63,9 @@ class Scene extends Phaser.Scene {
 
   constructor() {
     super("scene");
+    self = this;
     this.balance = Phaser.Math.Between(50, 150);
     this.dollar_balance = Phaser.Math.Between(1, 10);
-    this.points_sets = [
-      [100, 1000, 1900, 300, 100, -100, 3],
-      [2000, 900, 350, 450, 30, -90, 3],
-      [1200, -300, 300, 1900, 30, -90, 3],
-      [2600, 500, 300, 1200, 30, -90, 3],
-      [900, 550, 905, 555, 30, -90, 3],
-      [1800, 0, 1100, 1200, 150, -55, 5],
-      [2000, 0, 1500, 0, 11, -55, 2],
-      [700, 700, 705, 705, 30, -90, 3]
-    ];
   }
 
   preload() {
@@ -84,6 +78,8 @@ class Scene extends Phaser.Scene {
     this.load.image("cruise_ship", cruise_ship);
     this.load.image("plastic", plastic);
     this.load.image("sargassum", sargassum);
+    this.load.image("plasticbag", plasticbag);
+    this.load.image("microplastic", microplastic);
     this.load.video('intro', intro);
     const pixelWidth = 2;
     const star: Array<string> = [
@@ -171,14 +167,14 @@ class Scene extends Phaser.Scene {
     intro_is_over = true;
     video.stop()
     video.destroy();
-    
   }
 
   update(time, delta) {
-    console.log(intro_is_over);
     if(intro_is_over){
       
       this.balance_text.setText(`Balance: ${this.balance}`);
+      this.plastic_text.setText(`Plastic: ${this.parameters["plastic"]}`)
+      this.happiness_text.setText(`Happiness: ${this.parameters["happiness"]}`)
       
       if (t === -1) {
         return;
@@ -189,55 +185,135 @@ class Scene extends Phaser.Scene {
         t = 0;
       } else {
         const d = t / duration;
-        for (let i = 0; i < swimming_curves.length; i += 1) {
-          const curve = swimming_curves[i];
-          const entity = swimming_entities[i];
-          const p = curve.getPoint(d);
-          entity.setPosition(p.x, p.y);
+        for (let i = 0; i < swimming_entities.length; i += 1) {
+          const p = swimming_entities[i]["curve"].getPoint(d);
+          swimming_entities[i]["image"].setPosition(p.x, p.y);
         }
       }
     }
   }
 
   initialize_swimming_entities() {
-    this.populate_swimming_curves();
-    let entity = this.add.image(0, 0, "shark");
-    entity.setScale(1 / 2);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "turtle");
-    entity.setScale(1 / 8);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "tuna");
-    entity.setScale(1 / 8);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "humpback");
-    entity.setScale(1 / 3);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "fishing_boat");
-    entity.setScale(1 / 2);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "cruise_ship");
-    entity.setScale(1 / 8);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "plastic");
-    entity.setScale(1 / 6);
-    swimming_entities.push(entity);
-    entity = this.add.image(0, 0, "sargassum");
-    entity.setScale(1 / 5);
-    swimming_entities.push(entity);
+    const graphics = this.add.graphics();
+    graphics.lineStyle(0, 0xffffff, 1);
+
+    swimming_entities = [
+      {
+        "image": this.add.image(0, 0, "shark").setScale(1 / 2),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(100, 1000, 1900, 300, 100, -100, 3)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "turtle").setScale(1 / 5),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(2000, 900, 350, 450, 30, -90, 3)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "tuna").setScale(1 / 8),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(1200, -300, 300, 1900, 30, -90, 3)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "humpback").setScale(1 / 3),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(2600, 500, 300, 1200, 30, -90, 3)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "fishing_boat").setScale(1 / 2),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(900, 550, 905, 555, 30, -90, 3)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "cruise_ship").setScale(1 / 7).setInteractive().on("clicked", this.dump_plastic),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(1800, 0, 1100, 1200, 150, -55, 5)
+        )
+      },
+      {
+        "image": this.add.image(0, 0, "sargassum").setScale(1 / 6),
+        "curve": new Phaser.Curves.Spline(
+          this.get_points(700, 700, 705, 705, 30, -90, 3)
+        )
+      },
+    ];
+
+    this.input.on(
+      "gameobjectup",
+      function (pointer, gameObject) {
+        gameObject.emit("clicked", gameObject, false);
+      },
+      this
+    );
+    
     t = 0;
   }
 
-  populate_swimming_curves() {
+
+  get_rundom_plastic_image(x, y){
+    let r = Phaser.Math.Between(0, 2)
+    let img;
+    if(r === 0){
+      img = self.add.image(x, y, "microplastic").setScale(1/6);
+    } else if(r === 1){
+      img = self.add.image(x, y, "plasticbag").setScale(1/6);
+    }else if (r === 2){
+      img = self.add.image(x, y, "plastic").setScale(1/6);
+    }
+    return img;
+  }
+
+
+dump_plastic(g_obj){
+  let image = self.get_rundom_plastic_image(g_obj.x, g_obj.y).setScale(1/6).setInteractive()
+  image.on("clicked", self.collect_plastic)
+  swimming_entities.push(
+      {
+        "curve": self.get_rundom_swimming_curve(g_obj.x, g_obj.y),
+        "image": image
+    }
+  );
+  self.input.on(
+    "collectobjectup",
+    function (pointer, gameObject) {
+      gameObject.emit("clicked", gameObject, true);
+    },
+    self
+  );
+  self.parameters["plastic"] += 1;
+  self.parameters["happiness"] += 1;
+}
+
+collect_plastic(obj){
+  const box = obj;
+  box.off("clicked", this.clickHandler);
+  box.input.enabled = false;
+  box.setVisible(false);
+  self.parameters["plastic"] -= 1;
+}
+
+  get_rundom_swimming_curve(start_x, start_y){
     const graphics = this.add.graphics();
     graphics.lineStyle(0, 0xffffff, 1);
-    for(let i = 0; i<this.points_sets.length; i++){
-      let curve = new Phaser.Curves.Spline(
-        this.get_points(this.points_sets[i][0], this.points_sets[i][1], this.points_sets[i][2], this.points_sets[i][3], this.points_sets[i][4], this.points_sets[i][5], this.points_sets[i][6])
-        );
-        curve.draw(graphics, 64);
-        swimming_curves.push(curve);
-    }
+    let curve = new Phaser.Curves.Spline(
+      this.get_points(
+        // Phaser.Math.Between(300, 2500),
+        start_x,
+        // Phaser.Math.Between(50, 1500),
+        start_y,
+        Phaser.Math.Between(300, 2500),
+        Phaser.Math.Between(50, 1500),
+        Phaser.Math.Between(1, 300),
+        Phaser.Math.Between(1, 300),
+        Phaser.Math.Between(1, 11)
+      )
+      );
+    curve.draw(graphics, Phaser.Math.Between(1, 100));
+    return curve;
   }
 
   get_points(x1, y1, x2, y2, curve1, curve2, modulus){
