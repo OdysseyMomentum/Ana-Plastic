@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import "phaser";
 import Box from "@material-ui/core/Box";
+import Donut from "../../components/game/Donut";
 import Scene from "../../components/game/Scene";
 import { Config } from "../../types/Phaser";
 

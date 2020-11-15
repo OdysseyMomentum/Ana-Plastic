@@ -23,9 +23,11 @@ const getAirplanesOverSargosso = () => {
   airplaneRequest.get(latMin, longMin, latMax, longMax).then((response) => {
     const airplanes = [];
 
-    console.log(response);
+    if (!response["states"]) {
+      return airplanes;
+    }
 
-    response.states.forEach((airplaneResponse) => {
+    response["states"].forEach((airplaneResponse) => {
       const airplane = new Airplane(airplaneResponse[5], airplaneResponse[6]);
 
       airplanes.push(airplane);

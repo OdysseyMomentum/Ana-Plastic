@@ -1,5 +1,8 @@
 import "phaser";
 import map from "../../assets/images/largemap.png";
+import Donut from "./Donut";
+import donutImage from "../../assets/images/donut.png";
+
 
 class Scene extends Phaser.Scene {
   private balance: number;
@@ -12,6 +15,7 @@ class Scene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("donutbase", donutImage);
     this.load.image("map", map);
     const pixelWidth = 2;
     const star: Array<string> = [
@@ -72,6 +76,7 @@ class Scene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 2048, 2048);
     this.add.image(0, 0, "map").setOrigin(0);
     this.loadDiamonds(20);
+    const donut = new Donut(this, {});
   }
 }
 
