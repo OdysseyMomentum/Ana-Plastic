@@ -6,6 +6,7 @@ import history from "../utils/history";
 
 const Home = lazy(() => import("../views/home/App"));
 const Game = lazy(() => import("../views/game/Game"));
+const Login = lazy(() => import("../components/web3/Login"));
 
 const IndexRouter: React.FC = (): ReactElement => {
   return (
@@ -15,6 +16,7 @@ const IndexRouter: React.FC = (): ReactElement => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/game" exact component={Game} />
+            <Route path="/login" exact component={Login} />
           </Switch>
         </Suspense>
       </HashRouter>

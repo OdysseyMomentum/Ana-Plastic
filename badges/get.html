@@ -13,7 +13,7 @@
         }
 
 
-var globalaccounts;
+var globalAccounts;
 var nft_address
 
 var globallisttemplates=[]
@@ -48,7 +48,7 @@ function FindBadge(wantedname) {
 var globalbadgeinfo=[]
 
 
- async function GetJson(source) {    
+ async function getJson(source) {    
 	var f=await fetch(source)    
     try {
         var Items=await f.json();            
@@ -83,11 +83,11 @@ async function GetWorldBadge() {
 		return;
 	}
 		
-	var mybalance=await web3.eth.getBalance(globalaccounts[0]);	
-	log(`mybalance ${web3.utils.fromWei(mybalance, 'ether')} ether`)
+	var balance=await web3.eth.getBalance(globalAccounts[0]);	
+	log(`balance ${web3.utils.fromWei(balance, 'ether')} ether`)
 	
 	
-    console.log(`my balance ${mybalance}`)
+    console.log(`my balance ${balance}`)
     
 	const privateKey= '0x0da19552d21de3da01e4a5ff72f6722b9a86c78ee6c6a46e5cdcf0fb5a936110'; // note very insecure, but for test ETH this is usable   
 	var addressFaucet = web3.eth.accounts.privateKeyToAccount(privateKey).address; 
@@ -96,24 +96,24 @@ async function GetWorldBadge() {
 	var value=web3.utils.toWei('10', 'milli');
 	console.log(value)
     
-    if (mybalance < value) {
+    if (balance < value) {
         log("Wait 20 seconds to get some ETH")
-        result = await  web3.eth.sendTransaction({from: addressFaucet,to: globalaccounts[0],gas: 200000,value: value}).catch(x => log(`Error: ${x.code} ${x.message}`));    
+        result = await  web3.eth.sendTransaction({from: addressFaucet,to: globalAccounts[0],gas: 200000,value: value}).catch(x => log(`Error: ${x.code} ${x.message}`));    
         
         var etherscan=`https://rinkeby.etherscan.io/tx/${result.transactionHash}`
         log(`<a href="${etherscan}" target="_blank">etherscan</a>`)
         
         
         
-    //    log(`mybalance ${web3.utils.fromWei(mybalance, 'ether')} ether`)
+    //    log(`balance ${web3.utils.fromWei(balance, 'ether')} ether`)
         } 
 
-	mybalance=await web3.eth.getBalance(globalaccounts[0]);
+	balance=await web3.eth.getBalance(globalAccounts[0]);
     
     
 	log(`Getting badge now`) 
     log("Confirm metamask popup and wait 20 seconds");
-	var result=await nft_contract.methods.createToken(globalaccounts[0],wantedid).send({from: globalaccounts[0]})
+	var result=await nft_contract.methods.createToken(globalAccounts[0],wantedid).send({from: globalAccounts[0]})
 	log("after")
     
     var id=result.events.Transfer.returnValues._tokenId
@@ -139,14 +139,14 @@ async function main() {
     }
     web3 = new Web3(Web3.givenProvider); // provider from metamask  
     var result=await web3.eth.requestAccounts().catch(x=>log(x.message));    
-    globalaccounts=await web3.eth.getAccounts().catch(log);
+    globalAccounts=await web3.eth.getAccounts().catch(log);
     var nid=(await web3.eth.net.getId());
     if (nid !=4) {
       	log(`Make sure you are on the Rinkeby network (currently ${nid})`);  
         return
      }
      var nft_jsonurl="https://raw.githubusercontent.com/OdysseyMomentum/Ana-Plastic/main/badges/build/contracts/WORLDNFT.json"
-     nft_jsonobject=await GetJson(nft_jsonurl)    
+     nft_jsonobject=await getJson(nft_jsonurl)    
      nft_address=nft_jsonobject.networks[nid].address		
      var nft_code=await web3.eth.getCode(nft_address)
     
